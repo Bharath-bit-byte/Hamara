@@ -77,6 +77,34 @@ public class ApiGatewayCorsTest {
     }
 
     @Test
+    @DisplayName("Preflight CORS OPTIONS with Google Cloud Run origin succeeds with 200 OK and matching CORS header")
+    public void testPreflightCors_CloudRunOrigin() {
+        webTestClient.options()
+                .uri("/api/v1/industries")
+                .header("Origin", "https://frontend-807653380381.asia-south1.run.app")
+                .header("Access-Control-Request-Method", "GET")
+                .header("Access-Control-Request-Headers", "Content-Type,Accept")
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().valueEquals("Access-Control-Allow-Origin", "https://frontend-807653380381.asia-south1.run.app")
+                .expectHeader().valueEquals("Access-Control-Max-Age", "3600");
+    }
+
+    @Test
+    @DisplayName("Preflight CORS OPTIONS with https://hamarashops.ai origin succeeds with 200 OK and matching CORS header")
+    public void testPreflightCors_HamarashopsAiOrigin() {
+        webTestClient.options()
+                .uri("/api/v1/industries")
+                .header("Origin", "https://hamarashops.ai")
+                .header("Access-Control-Request-Method", "GET")
+                .header("Access-Control-Request-Headers", "Content-Type,Accept")
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().valueEquals("Access-Control-Allow-Origin", "https://hamarashops.ai")
+                .expectHeader().valueEquals("Access-Control-Max-Age", "3600");
+    }
+
+    @Test
     @DisplayName("Preflight CORS OPTIONS with unauthorized origin (https://evil-attacker.com) does NOT receive Access-Control-Allow-Origin")
     public void testPreflightCors_UnauthorizedOrigin_Rejected() {
         webTestClient.options()
