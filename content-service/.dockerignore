@@ -1,8 +1,0 @@
-.git
-.gitignore
-.gitattributes
-.classpath
-.project
-.settings
-target
-*.md

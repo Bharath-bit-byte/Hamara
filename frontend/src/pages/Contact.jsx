@@ -5,6 +5,8 @@ import { ContactApi } from '../services/api';
 import InnerPageHero from '../components/common/InnerPageHero';
 import Card3D from '../components/common/Card3D';
 import AppointmentModal from '../components/common/AppointmentModal';
+import ScheduleConsultationSection from '../components/common/ScheduleConsultationSection';
+import { hasBookingUrl, navigateToBooking } from '../services/bookingService';
 
 // Lazy load 3D visualizer background
 const Float3DCanvas = lazy(() => import('../components/common/Float3DCanvas'));
@@ -47,10 +49,16 @@ export default function Contact() {
   }, []);
 
   useEffect(() => {
-    const handleOpen = () => setIsAppointmentOpen(true);
+    const handleOpen = () => {
+      if (hasBookingUrl()) {
+        navigateToBooking();
+      } else {
+        setIsAppointmentOpen(true);
+      }
+    };
     window.addEventListener('open-appointment-modal', handleOpen);
     if (window.location.hash === '#appointment') {
-      setIsAppointmentOpen(true);
+      handleOpen();
     }
     return () => window.removeEventListener('open-appointment-modal', handleOpen);
   }, []);
@@ -160,36 +168,18 @@ export default function Contact() {
                 </Card3D>
               </motion.div>
 
-              {/* Dedicated Appointment Banner Card */}
+              {/* Dedicated Schedule Business Consultation Section */}
               <motion.div
+                id="consultation-booking"
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
-                <Card3D glowColor="#ff6b6b" className="p-8 border border-[#ff6b6b]/40 bg-gradient-to-br from-[#1a1c20] via-[#0a1628] to-[#0c0e12] space-y-5 shadow-xl w-full">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-[#ff6b6b]/20 border border-[#ff6b6b]/40 text-[#ff6b6b]">
-                      <Calendar className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h4 className="font-headline text-lg font-bold text-white">Direct Meeting Request</h4>
-                      <p className="text-xs text-[#4cd6ff] font-mono">1-on-1 Architect Consultation</p>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-slate-300 leading-relaxed font-normal">
-                    Prefer a direct discussion? Submit a request to schedule a 1-on-1 meeting with our AI solution architects at your preferred date and time.
-                  </p>
-
-                  <button
-                    onClick={() => setIsAppointmentOpen(true)}
-                    className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#ff6b6b] to-[#ff8533] text-[#68000f] font-extrabold text-xs hover:shadow-xl hover:shadow-[#ff6b6b]/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <Calendar className="w-4 h-4" />
-                    <span>Schedule an Appointment</span>
-                  </button>
-                </Card3D>
+                <ScheduleConsultationSection
+                  compact
+                  onFallbackModal={() => setIsAppointmentOpen(true)}
+                />
               </motion.div>
             </div>
 
@@ -251,7 +241,13 @@ export default function Contact() {
                         <button
                           id="appointment"
                           type="button"
-                          onClick={() => setIsAppointmentOpen(true)}
+                          onClick={() => {
+                            if (hasBookingUrl()) {
+                              navigateToBooking();
+                            } else {
+                              setIsAppointmentOpen(true);
+                            }
+                          }}
                           className="px-4 py-2.5 rounded-xl bg-[#ff6b6b]/10 border border-[#ff6b6b]/40 text-[#ff6b6b] hover:bg-[#ff6b6b]/20 font-mono text-xs flex items-center gap-2 shrink-0 transition-colors cursor-pointer scroll-mt-28"
                         >
                           <Calendar className="w-4 h-4" />

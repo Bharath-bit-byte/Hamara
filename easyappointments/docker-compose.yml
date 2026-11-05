@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  easyappointments:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hamarashops-easyappointments
+    restart: unless-stopped
+    ports:
+      - "8085:8080"
+    environment:
+      - BASE_URL=http://localhost:8085
+      - LANGUAGE=english
+      - DEBUG_MODE=TRUE
+      - DB_HOST=db
+      - DB_NAME=easyappointments
+      - DB_USERNAME=ea_user
+      - DB_PASSWORD=secret
+      - PROXY_IPS=*
+      - MAIL_PROTOCOL=mail
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    container_name: hamarashops-ea-mysql
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_secret
+      - MYSQL_DATABASE=easyappointments
+      - MYSQL_USER=ea_user
+      - MYSQL_PASSWORD=secret
+    ports:
+      - "3307:3306"
+    volumes:
+      - ea_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_secret"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  ea_mysql_data:
+    driver: local

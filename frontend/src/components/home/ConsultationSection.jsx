@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ContactApi } from '../../services/api';
-import { Send, CheckCircle2, Sparkles, ShieldCheck } from 'lucide-react';
+import { Send, CheckCircle2, Sparkles, ShieldCheck, Calendar, ArrowUpRight } from 'lucide-react';
+import { hasBookingUrl, navigateToBooking } from '../../services/bookingService';
 
 export default function ConsultationSection() {
   const [form, setForm] = useState({ fullName: '', email: '', subject: 'Homepage Consultation', message: '', category: 'General' });
@@ -63,6 +64,24 @@ export default function ConsultationSection() {
                   <ShieldCheck className="w-4 h-4 text-[#4cd6ff]" />
                   <span>24-Hour Response Time SLA</span>
                 </div>
+              </div>
+
+              <div className="pt-6">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (hasBookingUrl()) {
+                      navigateToBooking();
+                    } else {
+                      window.dispatchEvent(new CustomEvent('open-appointment-modal'));
+                    }
+                  }}
+                  className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#ff6b6b] to-[#ff8533] text-[#68000f] text-xs font-bold hover:shadow-lg hover:shadow-[#ff6b6b]/30 transition-all inline-flex items-center gap-2 cursor-pointer"
+                >
+                  <Calendar className="w-4 h-4 text-[#68000f]" />
+                  <span>Schedule an Appointment</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#68000f]" />
+                </button>
               </div>
             </div>
 

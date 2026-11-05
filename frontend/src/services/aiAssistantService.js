@@ -1,10 +1,7 @@
 /**
  * HamaraShops.ai - Intelligent Website-Wide AI Assistant Engine
- * Real-Time Integration with 4 Java 21 Spring Boot Microservices:
- * 1. API Gateway (Spring Cloud Gateway WebFlux, Port 8080)
- * 2. Content Service (Catalog, Products, Solutions, Partners, Metrics, Port 8081)
- * 3. Business Service (Industries & Careers, Port 8082)
- * 4. Contact Service (Lead Inquiries, Contact Info, Appointments, Port 8083)
+ * Real-Time Integration with Java 21 Spring Boot Monolithic Backend:
+ * - Unified Monolith (Port 8080): Content, Business, Contact, and Assistant Engine
  */
 
 import { ContentApi, BusinessApi, ContactApi, AssistantApi } from './api';

@@ -109,7 +109,7 @@ export default function Footer() {
             <h4 className="font-bold text-white text-base mb-4 tracking-wide font-headline">Get Started</h4>
             <p className="text-xs text-slate-400 mb-4">Transform your enterprise workflows with tailored cognitive solutions.</p>
             <Link
-              to="/contact"
+              to="/contact#consultation-booking"
               className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#ff6b6b] to-[#ff8533] text-[#68000f] text-sm font-bold hover:shadow-lg hover:shadow-[#ff6b6b]/25 transition-all"
             >
               <span>Schedule Strategy Session</span>

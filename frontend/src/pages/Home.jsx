@@ -6,6 +6,7 @@ import HeroSection from '../components/home/HeroSection';
 import CompanyVideoSection from '../components/home/CompanyVideoSection';
 import LocationsSection from '../components/home/LocationsSection';
 import Card3D from '../components/common/Card3D';
+import ScheduleConsultationSection from '../components/common/ScheduleConsultationSection';
 import { BusinessApi } from '../services/api';
 
 // Lazy load 3D pipeline component to optimize main chunk size
@@ -285,6 +286,18 @@ export default function Home() {
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* 7. Executive Consultation & Appointment Booking Section */}
+      <section id="schedule-consultation" className="py-20 px-6 relative bg-[#0a1628]/80 z-20 overflow-hidden border-b border-[#3c475a]/20">
+        <div className="max-w-4xl mx-auto">
+          <ScheduleConsultationSection
+            compact={false}
+            onFallbackModal={() => {
+              window.dispatchEvent(new CustomEvent('open-appointment-modal'));
+            }}
+          />
         </div>
       </section>
     </div>

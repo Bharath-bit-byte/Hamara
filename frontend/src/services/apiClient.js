@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Base URL points strictly to Spring Cloud API Gateway (Port 8080)
+// Base URL points strictly to the Monolithic Spring Boot Backend (Port 8080)
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
 
 export const apiClient = axios.create({
@@ -17,7 +17,7 @@ apiClient.interceptors.response.use(
   (error) => {
     const customError = {
       status: error.response?.status || 500,
-      message: error.response?.data?.message || 'Unable to connect to HamaraShops.ai API Gateway services.',
+      message: error.response?.data?.message || 'Unable to connect to HamaraShops.ai backend services.',
       timestamp: error.response?.data?.timestamp || new Date().toISOString(),
     };
     return Promise.reject(customError);

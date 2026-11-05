@@ -1,0 +1,30 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: hamarashops-backend
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+
+# Resend API & External Notification Configuration
+resend:
+  api:
+    key: ${RESEND_API_KEY:}
+  from: ${CONTACT_FROM_EMAIL:${RESEND_FROM:onboarding@resend.dev}}
+
+contact:
+  recipient: ${NOTIFICATION_TO_EMAIL:${CONTACT_RECIPIENT:info@hamarashops.ai}}
+
+# Frontend Origin for CORS configuration
+frontend:
+  url: ${FRONTEND_URL:https://hamarashops.com}

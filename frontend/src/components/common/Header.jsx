@@ -5,6 +5,7 @@ import { Search, Menu, X, ArrowUpRight, ChevronDown } from 'lucide-react';
 import logoImg from '../../assets/logo.png';
 import SearchModal from './SearchModal';
 import AppointmentModal from './AppointmentModal';
+import { hasBookingUrl, navigateToBooking } from '../../services/bookingService';
 
 const navLinks = [
   { name: 'About', path: '/about' },
@@ -72,9 +73,22 @@ export default function Header() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const handleScheduleAppointment = () => {
+    if (hasBookingUrl()) {
+      navigateToBooking();
+    } else {
+      setAppointmentModalOpen(true);
+    }
+    setMobileMenuOpen(false);
+  };
+
   useEffect(() => {
     const handleOpenAppointmentModal = () => {
-      setAppointmentModalOpen(true);
+      if (hasBookingUrl()) {
+        navigateToBooking();
+      } else {
+        setAppointmentModalOpen(true);
+      }
       setMobileMenuOpen(false);
     };
     window.addEventListener('open-appointment-modal', handleOpenAppointmentModal);
@@ -208,7 +222,7 @@ export default function Header() {
             </button>
 
             <button
-              onClick={() => setAppointmentModalOpen(true)}
+              onClick={handleScheduleAppointment}
               className="px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-gradient-to-r from-[#ff6b6b] to-[#ff8533] text-[#68000f] text-xs sm:text-sm font-bold tracking-wide hover:shadow-lg hover:shadow-[#ff6b6b]/30 hover:opacity-95 transition-all flex items-center gap-1.5 group cursor-pointer"
               aria-label="Schedule Appointment"
             >
@@ -352,10 +366,7 @@ export default function Header() {
                       </button>
 
                       <button
-                        onClick={() => {
-                          setMobileMenuOpen(false);
-                          setAppointmentModalOpen(true);
-                        }}
+                        onClick={handleScheduleAppointment}
                         className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#ff6b6b] to-[#ff8533] text-[#68000f] text-center font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#ff6b6b]/30 cursor-pointer"
                       >
                         <span>Schedule Appointment</span>

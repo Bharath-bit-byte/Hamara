@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, Clock, User, Mail, Phone, FileText, MessageSquare, X, CheckCircle2, AlertCircle, Loader2, Info } from 'lucide-react';
+import { Calendar, Clock, User, Mail, Phone, FileText, MessageSquare, X, CheckCircle2, AlertCircle, Loader2, Info, ArrowUpRight } from 'lucide-react';
 import { ContactApi } from '../../services/api';
+import { hasBookingUrl, navigateToBooking } from '../../services/bookingService';
 
 export default function AppointmentModal({ isOpen, onClose }) {
   const todayStr = new Date().toISOString().split('T')[0];
@@ -176,7 +177,30 @@ export default function AppointmentModal({ isOpen, onClose }) {
               </div>
             ) : (
               /* Request Form */
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-5">
+                {hasBookingUrl() && (
+                  <div className="p-4 rounded-2xl bg-gradient-to-r from-[#ff6b6b]/15 to-[#ff8533]/15 border border-[#ff6b6b]/40 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div className="text-left space-y-0.5">
+                      <p className="text-xs font-bold text-white flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-[#ff6b6b]" />
+                        <span>Instant Live Booking Available</span>
+                      </p>
+                      <p className="text-[11px] text-slate-300">
+                        Select consultation services and real-time available time slots on our scheduling portal.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={navigateToBooking}
+                      className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#ff6b6b] to-[#ff8533] text-[#68000f] text-xs font-extrabold flex items-center gap-1.5 shrink-0 hover:shadow-lg hover:shadow-[#ff6b6b]/20 transition-all cursor-pointer"
+                    >
+                      <span>Go to Calendar</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Disclaimer Banner */}
                 <div className="p-4 rounded-xl bg-[#0c0e12] border border-[#3c475a] flex items-start gap-3 text-xs text-slate-300">
                   <Info className="w-5 h-5 text-[#4cd6ff] shrink-0 mt-0.5" />
@@ -359,6 +383,7 @@ export default function AppointmentModal({ isOpen, onClose }) {
                   </button>
                 </div>
               </form>
+            </div>
             )}
           </div>
         </motion.div>
