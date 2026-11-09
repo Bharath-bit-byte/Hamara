@@ -1,44 +1,47 @@
 /**
- * HamaraShops.ai - Easy!Appointments Redirect Service
+ * HamaraShops.ai - Booking Service Adapter
  * 
- * Manages redirect navigation to the deployed Easy!Appointments booking portal.
- * Reads the destination URL from the Vite environment variable VITE_BOOKING_URL.
+ * Bridges booking triggers directly to the official Cal.com integration.
  */
 
+import { getBaseCalcomLink, isCalcomConfigured, openCalcomModal, getCalcomOrigin } from './calcomService';
+
 /**
- * Retrieves the configured Easy!Appointments booking URL.
- * @returns {string} The booking URL, or an empty string if not configured.
+ * Returns the Cal.com booking link or full URL.
  */
 export const getBookingUrl = () => {
-  return import.meta.env.VITE_BOOKING_URL ? String(import.meta.env.VITE_BOOKING_URL).trim() : '';
+  const link = getBaseCalcomLink();
+  if (!link) return '';
+  const origin = getCalcomOrigin();
+  return `${origin}/${link}`;
 };
 
-/**
- * Checks whether a valid booking URL has been configured.
- * @returns {boolean} True if a non-empty booking URL is configured.
- */
 export const hasBookingUrl = () => {
-  const url = getBookingUrl();
-  return Boolean(url && url.length > 0);
+  return isCalcomConfigured();
 };
 
 /**
- * Navigates the customer to the Easy!Appointments booking page using window.location.assign.
- * Performs validation before redirecting.
- * 
- * @returns {boolean} True if redirect was initiated; false if URL was not configured.
+ * Opens the modern Cal.com popup modal calendar.
+ * Falls back to direct URL navigation if modal popup fails.
  */
-export const navigateToBooking = () => {
-  const url = getBookingUrl();
-  if (url && url.length > 0) {
-    window.location.assign(url);
+export const navigateToBooking = (eventSlug = null) => {
+  try {
+    openCalcomModal(eventSlug);
     return true;
+  } catch (error) {
+    console.warn('[BookingService] Failed to open Cal.com modal, navigating directly:', error);
+    const url = getBookingUrl();
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+      return true;
+    }
+    return false;
   }
-  return false;
 };
 
 export default {
   getBookingUrl,
   hasBookingUrl,
   navigateToBooking,
+  openCalcomModal,
 };

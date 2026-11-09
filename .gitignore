@@ -29,7 +29,6 @@
 .env.production
 application-local.yml
 application-local.properties
-easyappointments/src/config.php
 
 # Keep example environment & profile files
 !.env.example

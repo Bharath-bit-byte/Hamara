@@ -6,6 +6,7 @@ import InnerPageHero from '../components/common/InnerPageHero';
 import Card3D from '../components/common/Card3D';
 import AppointmentModal from '../components/common/AppointmentModal';
 import ScheduleConsultationSection from '../components/common/ScheduleConsultationSection';
+import CalcomInline from '../components/common/CalcomInline';
 import { hasBookingUrl, navigateToBooking } from '../services/bookingService';
 
 // Lazy load 3D visualizer background
@@ -179,6 +180,9 @@ export default function Contact() {
                 <ScheduleConsultationSection
                   compact
                   onFallbackModal={() => setIsAppointmentOpen(true)}
+                  onToggleInline={() => {
+                    document.getElementById('inline-calendar')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 />
               </motion.div>
             </div>
@@ -348,6 +352,11 @@ export default function Contact() {
               </motion.div>
             </div>
 
+          </div>
+
+          {/* Dedicated Cal.com Interactive Inline Booking Calendar */}
+          <div id="inline-calendar" className="mt-16 scroll-mt-28">
+            <CalcomInline defaultEventSlug="business-consultation" />
           </div>
         </section>
       </div>

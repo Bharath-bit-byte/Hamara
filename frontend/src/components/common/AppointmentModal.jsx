@@ -191,10 +191,13 @@ export default function AppointmentModal({ isOpen, onClose }) {
                     </div>
                     <button
                       type="button"
-                      onClick={navigateToBooking}
+                      onClick={() => {
+                        onClose();
+                        navigateToBooking();
+                      }}
                       className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#ff6b6b] to-[#ff8533] text-[#68000f] text-xs font-extrabold flex items-center gap-1.5 shrink-0 hover:shadow-lg hover:shadow-[#ff6b6b]/20 transition-all cursor-pointer"
                     >
-                      <span>Go to Calendar</span>
+                      <span>Open Cal.com Calendar</span>
                       <ArrowUpRight className="w-3.5 h-3.5" />
                     </button>
                   </div>

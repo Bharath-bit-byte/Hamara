@@ -28,3 +28,9 @@ contact:
 # Frontend Origin for CORS configuration
 frontend:
   url: ${FRONTEND_URL:https://hamarashops.com}
+
+# Cal.com Appointment & Webhook Configuration
+calcom:
+  webhook:
+    secret: ${CALCOM_WEBHOOK_SECRET:}
+  default-link: ${CALCOM_DEFAULT_LINK:hamarashops/business-consultation}
